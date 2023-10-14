@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -20,7 +20,6 @@ export class ProductsService {
 
   async create(createProductDto: CreateProductDto) {
     try {
-      
       const product = this.productRepository.create(createProductDto);
       await this.productRepository.save(product);
       return product;
@@ -29,20 +28,36 @@ export class ProductsService {
     }
   }
 
-  findAll() {
-    return `This action returns all products`;
+  async findAll() {
+    try {
+      const products: Product[] = await this.productRepository.find();
+      return products;
+    } catch (error) {
+      this.handlerDBExceptions(error);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async findOne(id: string) {
+    let product: Product;
+
+    product = await this.productRepository.findOneBy({id:id});
+
+    if(!product) throw new NotFoundException(`Product with id "${id}" not found`);
+   
+    return product;
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {
     return `This action updates a #${id} product`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  async remove(id: string) {
+    try {
+      await this.productRepository.delete({id: id});
+      return;
+    } catch (error) {
+      this.handlerDBExceptions(error);
+    }
   }
 
   private handlerDBExceptions( error: any ){
