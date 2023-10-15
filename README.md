@@ -12,7 +12,11 @@
 ```
 docker-compose up -d
 ```
-6. Levantar entorno en desarrollo :
+6. Ejecutar SEED
+```
+http://localhost:3000/api/seed
+```
+7. Levantar entorno en desarrollo :
 ```
 yarn start:dev
 ```
