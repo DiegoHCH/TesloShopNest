@@ -7,7 +7,6 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { PaginationDto } from '../common/dtos/pagination.dto';
 import { validate as isUUID } from 'uuid';
 import { Product, ProductImage } from './entities';
-import { url } from 'inspector';
 
 @Injectable()
 export class ProductsService {
