@@ -1,7 +1,7 @@
 
 
 export interface JwtPayload {
-    email: string;
+    uuid: string;
 
     //TODO:añadir todod lo que se quiera agregar
 }
